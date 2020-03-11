@@ -23,7 +23,7 @@ mkdir -p frames
 ffmpeg -i $input -r $framerate "frames/frame%04d.png"
 
 # list of frames
-frames=$(find frames -name '*.png' | sort)
+frames=$(find frames -name 'frame*.png' | sort)
 count=$(expr $(echo $frames | wc -w) - 1)
 
 # increment to percentage
@@ -45,7 +45,7 @@ done
 # make video
 echo "making new video"
 echo $frames | xargs cat \
-  | ffmpeg -f image2pipe -framerate $framerate -i - $result
+  | ffmpeg -y -f image2pipe -framerate $framerate -i - $result
 
-# delete frames folder
-# rm -rf frames
+# delete frames
+find frames -name 'frame*.png' | xargs rm
